@@ -1,16 +1,20 @@
 #pragma once
 
+#include "core/system_manager.h"
+#include "components.h"
 
-#include "system.h"
-
-class MovementSystem : public System {
+class MovementSystem : public System
+{
 public:
-    void update(double deltaTime) override {
-        // Implementation of movement logic
-        std::cout << "Updating MovementSystem with deltaTime: " << deltaTime << std::endl;
-    }
+    void update(float deltaTime)
+    {
+        for (auto const &entity : entities)
+        {
+            auto &transform = world->getComponent<Transform>(entity);
+            auto &velocity = world->getComponent<VelocityComponent>(entity);
 
-    Priority getPriority() const override {
-        return Priority::MOVEMENT;
+            transform.position.x += velocity.velocity.x * deltaTime;
+            transform.position.y += velocity.velocity.y * deltaTime;
+        }
     }
 };

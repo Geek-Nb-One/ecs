@@ -1,0 +1,2 @@
+#define MAX_ENTITIES 5000
+#define MAX_COMPONENTS 32
