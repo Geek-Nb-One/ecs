@@ -12,6 +12,8 @@ void DefaultWorldConfig::setupComponents(World *world)
     world->registerComponent<Transform>();
     world->registerComponent<PlayerControlComponent>();
     world->registerComponent<VelocityComponent>();
+    world->registerComponent<AnimationComponent>();
+    world->registerComponent<AnimationControllerComponent>();
 }
 
 void DefaultWorldConfig::setupSystems(World *world)
@@ -41,6 +43,7 @@ void DefaultWorldConfig::setupSystems(World *world)
     playerControlSignature.set(world->getComponentType<PlayerControlComponent>().id, true);
     playerControlSignature.set(world->getComponentType<Transform>().id, true);
     playerControlSignature.set(world->getComponentType<VelocityComponent>().id, true);
+    playerControlSignature.set(world->getComponentType<AnimationControllerComponent>().id, true);
     world->setSystemSignature<PlayerControllerSystem>(playerControlSignature);
 
     movementSystem = world->registerSystem<MovementSystem>();
@@ -49,6 +52,16 @@ void DefaultWorldConfig::setupSystems(World *world)
     movementSignature.set(world->getComponentType<Transform>().id, true);
     movementSignature.set(world->getComponentType<VelocityComponent>().id, true);
     world->setSystemSignature<MovementSystem>(movementSignature);
+
+
+    animationSystem = world->registerSystem<AnimationSystem>();
+    Signature animationSignature;
+    animationSignature.set(world->getComponentType<AnimationComponent>().id, true);
+    animationSignature.set(world->getComponentType<RenderComponent>().id, true);
+    world->setSystemSignature<AnimationSystem>(animationSignature);
+
+    world->subscribeEvent<AnimationSystem, EntityChangedStateEvent>(animationSystem.get(), &AnimationSystem::onEntityStateChanged);
+
 }
 
 void DefaultWorldConfig::update(float deltaTime)
@@ -57,6 +70,7 @@ void DefaultWorldConfig::update(float deltaTime)
     processSDLEvents();
 
     playerControllerSystem->update(deltaTime);
+    animationSystem->update(deltaTime);
     movementSystem->update(deltaTime);
 
     renderSystem->render();

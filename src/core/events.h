@@ -1,6 +1,12 @@
 #pragma once
 
+#include <string>
 
+struct EntityChangedStateEvent{
+    Entity entity;
+    std::string stateName;
+    EntityChangedStateEvent(Entity e, const std::string& state): entity(e), stateName(state) {}
+};
 
 struct QuitEvent{};
 

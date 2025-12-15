@@ -93,9 +93,25 @@ void PlayerControllerSystem::update(float deltaTime)
         {
             auto &playerControl = world->getComponent<PlayerControlComponent>(entity);
             auto &velocity = world->getComponent<VelocityComponent>(entity);
+            auto &animController = world->getComponent<AnimationControllerComponent>(entity);
 
             if (isMoving)
             {
+                std::string currentState;
+                if (playerDirection.y < 0)
+                    currentState = "walk_up";
+                else if (playerDirection.y > 0)
+                    currentState = "walk_down";
+                else if (playerDirection.x < 0)
+                    currentState = "walk_left";
+                else if (playerDirection.x > 0)
+                    currentState = "walk_right";
+                
+                if (animController.currentState != currentState)
+                {
+                    world->publishEvent<EntityChangedStateEvent>(entity, currentState);
+                }
+                
                 velocity.velocity = glm::normalize(playerDirection) * playerControl.speed;
             }
             else
