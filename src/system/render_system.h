@@ -4,6 +4,7 @@
 #include <SDL3/SDL.h>
 
 #include "core/texture_loader.h"
+#include "core/events.h"
 
 class World;
 
@@ -19,6 +20,6 @@ public:
 
     TextureLoader textureLoader;
 
-    
+    void onLogicalSizeChanged(LogicalSizeChangedEvent *event);
 
 };

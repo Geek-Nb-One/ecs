@@ -11,6 +11,18 @@ struct WindowResizeRequestedEvent{
     WindowResizeRequestedEvent(int w, int h): width(w), height(h) {}
 };
 
+struct WindowFullScreenRequestedEvent{
+    bool isFullScreen;
+
+    WindowFullScreenRequestedEvent(bool fullScreen): isFullScreen(fullScreen) {}
+};
+
+struct LogicalSizeChangedEvent{
+    int width;
+    int height;
+
+    LogicalSizeChangedEvent(int w, int h): width(w), height(h) {}
+};
 
 struct AxisMovedEvent{
     float xAxis;

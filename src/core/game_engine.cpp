@@ -16,12 +16,19 @@ void GameEngine::run()
     shutdown();
 }
 
+void GameEngine::onQuitEvent(QuitEvent *event)
+{
+    isRunning = false;
+}
+
 void GameEngine::init()
 {
     std::cerr << "Initializing Game Engine..." << std::endl;
 
     world = new World(new DefaultWorldConfig());
 
+    world->subscribeEvent<GameEngine, QuitEvent>(this, &GameEngine::onQuitEvent);
+    
     Entity entity = world->createEntity();
     RenderComponent renderComponent;
     renderComponent.texture = world->getTexture("F:\\Users\\User\\Documents\\game_studio\\projects\\ecs\\assets\\arts\\hyptosis_tile-art-batch-1.png");
@@ -46,6 +53,9 @@ void GameEngine::init()
     world->addComponent<VelocityComponent>(entity, velocityComponent);
 
     std::cerr << "Game Engine initialized." << std::endl;
+
+    world->publishEvent<WindowFullScreenRequestedEvent>(true);
+    world->publishEvent<LogicalSizeChangedEvent>(768, 432);
 }
 
 void GameEngine::loop()

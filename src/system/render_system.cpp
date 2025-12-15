@@ -16,7 +16,7 @@ void RenderSystem::init(SDL_Window *window)
 
 void RenderSystem::render()
 {
-    SDL_SetRenderDrawColor(renderer, 150, 150, 0, 255);
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderClear(renderer);
     // Rendering code would go here
 
@@ -43,4 +43,9 @@ void RenderSystem::render()
     }
 
     SDL_RenderPresent(renderer);
+}
+
+void RenderSystem::onLogicalSizeChanged(LogicalSizeChangedEvent *event)
+{
+    SDL_SetRenderLogicalPresentation(renderer, event->width, event->height,SDL_LOGICAL_PRESENTATION_LETTERBOX);
 }

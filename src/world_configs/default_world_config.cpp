@@ -21,12 +21,16 @@ void DefaultWorldConfig::setupSystems(World *world)
     windowSystem->init();
 
     world->subscribeEvent<WindowSystem, QuitEvent>(windowSystem.get(), &WindowSystem::destroy);
+    world->subscribeEvent<WindowSystem, WindowFullScreenRequestedEvent>(windowSystem.get(), &WindowSystem::onWindowFullScreenRequested);
 
     renderSystem = world->registerSystem<RenderSystem>();
     windowSystem->initRenderer(*renderSystem);
 
     world->setRenderer(renderSystem->renderer);
 
+
+    world->subscribeEvent<RenderSystem, LogicalSizeChangedEvent>(renderSystem.get(), &RenderSystem::onLogicalSizeChanged);
+    
     Signature signature;
     signature.set(world->getComponentType<RenderComponent>().id, true);
     world->setSystemSignature<RenderSystem>(signature);

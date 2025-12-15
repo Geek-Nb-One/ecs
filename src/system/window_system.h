@@ -21,6 +21,20 @@ public:
 
     }
 
+    void onWindowFullScreenRequested(WindowFullScreenRequestedEvent *event)
+    {
+        std::cout << "WindowSystem received WindowFullScreenRequestedEvent: "
+                  << "isFullScreen = " << event->isFullScreen << std::endl;
+        if(event->isFullScreen)
+        {
+            SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN);
+        }
+        else
+        {
+            SDL_SetWindowFullscreen(window, 0);
+        }
+    }
+
     void onWindowResizeRequested(WindowResizeRequestedEvent *event)
     {
         std::cout << "WindowSystem received WindowResizeRequestedEvent: "
@@ -33,6 +47,11 @@ public:
         if (sdlEvent.type == SDL_EVENT_QUIT)
         {
             world->publishEvent<QuitEvent>();
+        }
+        else if (sdlEvent.type == SDL_EVENT_KEY_DOWN){
+            if(sdlEvent.key.key == SDLK_ESCAPE){
+                world->publishEvent<QuitEvent>();
+            }
         }
     }
 
