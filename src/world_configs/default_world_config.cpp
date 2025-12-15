@@ -46,6 +46,8 @@ void DefaultWorldConfig::setupSystems(World *world)
     playerControlSignature.set(world->getComponentType<AnimationControllerComponent>().id, true);
     world->setSystemSignature<PlayerControllerSystem>(playerControlSignature);
 
+    playerControllerSystem->init();
+    
     movementSystem = world->registerSystem<MovementSystem>();
 
     Signature movementSignature;

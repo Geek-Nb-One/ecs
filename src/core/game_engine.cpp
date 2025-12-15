@@ -217,7 +217,8 @@ void GameEngine::init()
 
     std::cerr << "Game Engine initialized." << std::endl;
 
-    world->publishEvent<WindowFullScreenRequestedEvent>(true);
+    // world->publishEvent<WindowFullScreenRequestedEvent>(true);
+    world->publishEvent<WindowResizeRequestedEvent>(768, 432);
     world->publishEvent<LogicalSizeChangedEvent>(768, 432);
 }
 
