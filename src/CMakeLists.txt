@@ -8,5 +8,6 @@ target_sources(ecs PRIVATE
     system/player_controller_system.cpp
     core/world_config.cpp
     world_configs/default_world_config.cpp
+    world_builder/test_world_builder.cpp
 )
 

@@ -45,7 +45,7 @@ struct AnimationFrame{
 };
 
 struct AnimationComponent{
-    std::vector<AnimationFrame>* frames;
+    std::vector<AnimationFrame>* frames =nullptr;
     int currentFrameIndex = 0;
     float elapsedTime = 0.0f;
     bool loop = true;
@@ -69,4 +69,11 @@ struct AnimationComponent{
 struct AnimationControllerComponent{
     std::string currentState;
     std::unordered_map<std::string, std::vector<AnimationFrame>> stateAnimations;
+};
+
+
+struct ColliderComponent{
+    glm::vec2 size;
+    glm::vec2 offset;
+    
 };

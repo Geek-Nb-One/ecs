@@ -5,6 +5,7 @@
 
 #include "core/events.h"
 
+#include "world_builder/test_world_builder.h"
 
 
 
@@ -21,6 +22,7 @@ private:
     void shutdown();
 
     World* world = nullptr;
+    WorldBuilder * worldBuilder = new TestWorldBuilder();
 
     bool isRunning = true;
 

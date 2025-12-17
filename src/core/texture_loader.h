@@ -32,6 +32,7 @@ private:
 
         SDL_Surface *surface = IMG_Load(filePath);
         SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer, surface);
+        SDL_SetTextureScaleMode(texture, SDL_SCALEMODE_NEAREST);
         SDL_DestroySurface(surface);
         textures[filePath] = texture;
         return texture;

@@ -64,6 +64,13 @@ void DefaultWorldConfig::setupSystems(World *world)
 
     world->subscribeEvent<AnimationSystem, EntityChangedStateEvent>(animationSystem.get(), &AnimationSystem::onEntityStateChanged);
 
+
+    colliderSystem = world->registerSystem<ColliderSystem>();
+    Signature colliderSignature;
+    colliderSignature.set(world->getComponentType<Transform>().id, true);
+    colliderSignature.set(world->getComponentType<ColliderComponent>().id, true);
+    world->setSystemSignature<ColliderSystem>(colliderSignature);
+    
 }
 
 void DefaultWorldConfig::update(float deltaTime)
