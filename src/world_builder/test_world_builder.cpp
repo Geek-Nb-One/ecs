@@ -78,6 +78,27 @@ void TestWorldBuilder::buildEnvironment(World *world)
         }
     }
 
+
+    auto entity =  world->createEntity();
+    Transform transform;
+    transform.position = glm::vec3(200.0f, 200.0f, 0.0f);
+    transform.rotation = 0.0f;
+    transform.scale = glm::vec2(1.0f, 1.0f);
+    world->addComponent<Transform>(entity, transform);
+    ColliderComponent collider;
+    collider.shape = ColliderComponent::Shape::Rectangle;
+    collider.isStatic = true;
+    collider.offset = glm::vec2(0.0f, 0.0f);
+    collider.size = glm::vec2(32.0f, 32.0f);
+    world->addComponent<ColliderComponent>(entity, collider);
+    RenderComponent renderComponent;
+    renderComponent.texture = tileTexture;
+    renderComponent.srcPosition = glm::vec2(5*16.0f, 16*16.0f);
+    renderComponent.srcSize = glm::vec2(32.0f, 32.0f);
+    renderComponent.destPosition = glm::vec2(0.0f, 0.0f);
+    renderComponent.destSize = glm::vec2(32.0f, 32.0f);
+    world->addComponent<RenderComponent>(entity, renderComponent);
+
 }
 
 void TestWorldBuilder::buildPlayer(World *world)
@@ -247,4 +268,13 @@ void TestWorldBuilder::buildPlayer(World *world)
     VelocityComponent velocityComponent;
     velocityComponent.velocity = glm::vec2(0.0f, 0.0f);
     world->addComponent<VelocityComponent>(entity, velocityComponent);
+
+    ColliderComponent collider;
+    collider.shape = ColliderComponent::Shape::Rectangle;
+    collider.isStatic = false;
+    collider.offset = glm::vec2(0.0f, 0.0f);
+    collider.size = glm::vec2(16.0f, 32.0f);
+    world->addComponent<ColliderComponent>(entity, collider);
+    
+
 }

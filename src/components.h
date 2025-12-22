@@ -73,7 +73,17 @@ struct AnimationControllerComponent{
 
 
 struct ColliderComponent{
-    glm::vec2 size;
+
+
+    enum class Shape{
+        Rectangle,
+        Circle
+    } shape = Shape::Rectangle;
+
     glm::vec2 offset;
+    glm::vec2 size; // For rectangle: width and height; For circle: x = radius, y unused    
+    
+
+    bool isStatic = false;
     
 };

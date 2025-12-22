@@ -17,7 +17,7 @@ void RenderSystem::render()
 
     std::vector<Entity> sortedEntities;
 
-    for (auto const& entity : entities)
+    for (auto const& entity : getEntities())
     {
         sortedEntities.push_back(entity);
     }

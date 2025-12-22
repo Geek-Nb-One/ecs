@@ -125,7 +125,7 @@ void PlayerControllerSystem::update(float deltaTime)
         }
     }
 
-    for (auto const &entity : entities)
+    for (auto const &entity : getEntities())
     {
         try
         {

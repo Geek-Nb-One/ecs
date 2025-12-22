@@ -11,7 +11,7 @@ public:
     void update(float deltaTime)
     {
         // Animation update logic would go here
-        for(auto entity : entities)
+        for(auto entity : getEntities())
         {
             animateEntity(entity, deltaTime);
         }
@@ -20,7 +20,7 @@ public:
     void onEntityStateChanged(EntityChangedStateEvent* event)
     {
         // Handle entity state change if needed
-        if(entities.find(event->entity) != entities.end())
+        if(getEntities().find(event->entity) != getEntities().end())
         {
             // For example, reset animation on state change
             auto &anim = world->getComponent<AnimationComponent>(event->entity);

@@ -14,6 +14,7 @@ void DefaultWorldConfig::setupComponents(World *world)
     world->registerComponent<VelocityComponent>();
     world->registerComponent<AnimationComponent>();
     world->registerComponent<AnimationControllerComponent>();
+    world->registerComponent<ColliderComponent>();
 }
 
 void DefaultWorldConfig::setupSystems(World *world)
@@ -82,6 +83,8 @@ void DefaultWorldConfig::update(float deltaTime)
     animationSystem->update(deltaTime);
     movementSystem->update(deltaTime);
 
+    colliderSystem->update(deltaTime);
+    
     renderSystem->render();
 }
 

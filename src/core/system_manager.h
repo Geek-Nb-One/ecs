@@ -11,14 +11,36 @@
 #include "core/event_manager.h"
 #include "core/entity_manager.h"
 
-
 class World;
-
 
 class System
 {
 public:
-    std::set<Entity> entities;
+    using iterator = std::set<Entity>::iterator;
+    using const_iterator = std::set<Entity>::const_iterator;
+
+    iterator begin() { return entities.begin(); }
+    iterator end() { return entities.end(); }
+    const_iterator begin() const { return entities.begin(); }
+    const_iterator end() const { return entities.end(); }
+
+    const std::set<Entity> &getEntities() const { return entities; }
+
+    void addEntity(Entity entity)
+    {
+        onAddEntity(entity);
+        entities.insert(entity);
+    }
+
+    void removeEntity(Entity entity)
+    {
+        entities.erase(entity);
+        onRemoveEntity(entity);
+    }
+
+    virtual void onAddEntity(Entity entity) {}
+    virtual void onRemoveEntity(Entity entity) {}
+
     std::shared_ptr<World> world;
 
     void setWorld(std::shared_ptr<World> world)
@@ -26,8 +48,9 @@ public:
         this->world = world;
     }
 
+private:
+    std::set<Entity> entities;
 };
-
 
 class SystemManager
 {
@@ -43,7 +66,7 @@ public:
         systems[typeIndex] = system;
         return system;
     }
-    
+
     template <typename EventType>
     void setSignature(Signature signature)
     {
@@ -58,7 +81,7 @@ public:
         for (auto const &pair : systems)
         {
             auto const &system = pair.second;
-            system->entities.erase(entity);
+            system->removeEntity(entity);
         }
     }
 
@@ -72,11 +95,11 @@ public:
 
             if ((entitySignature & systemSignature) == systemSignature)
             {
-                system->entities.insert(entity);
+                system->addEntity(entity);
             }
             else
             {
-                system->entities.erase(entity);
+                system->removeEntity(entity);
             }
         }
     }
@@ -84,8 +107,6 @@ public:
 private:
     std::unordered_map<std::type_index, std::shared_ptr<System>> systems{};
     std::unordered_map<std::type_index, Signature> signatures{};
-
 };
-
 
 #include "core/world.h"

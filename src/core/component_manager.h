@@ -22,11 +22,11 @@ public:
     virtual void EntityDestroyed(Entity entity) = 0;
 };
 
-template <typename EventType>
+template <typename T>
 class ComponentArray : public IComponentArray
 {
 public:
-    void insertData(Entity entity, EventType component)
+    void insertData(Entity entity, T component)
     {
         assert(entityToIndexMap.find(entity) == entityToIndexMap.end() && "Component added to same entity more than once.");
         size_t newIndex = size;
@@ -53,9 +53,9 @@ public:
         --size;
     }
 
-    EventType &getData(Entity entity)
+    T &getData(Entity entity)
     {
-        assert(entityToIndexMap.find(entity) != entityToIndexMap.end() && "Retrieving non-existent component.");
+        assert(entityToIndexMap.find(entity) != entityToIndexMap.end() && "Retrieving non-existent component");
         return componentArray[entityToIndexMap[entity]];
     }
 
@@ -71,49 +71,49 @@ public:
 private:
     std::unordered_map<Entity, size_t> entityToIndexMap{};
     std::unordered_map<size_t, Entity> indexToEntityMap{};
-    std::array<EventType, MAX_ENTITIES> componentArray{};
+    std::array<T, MAX_ENTITIES> componentArray{};
     size_t size{};
 };
 
 class ComponentManager
 {
 public:
-    template <typename EventType>
+    template <typename T>
     void RegisterComponent()
     {
 
-        assert(componentTypes.find(typeid(EventType)) == componentTypes.end() && "Registering component type more than once.");
+        assert(componentTypes.find(typeid(T)) == componentTypes.end() && "Registering component type more than once.");
 
-        componentTypes[typeid(EventType)] = ComponentType{nextComponentType};
-        componentArrays[typeid(EventType)] = std::make_shared<ComponentArray<EventType>>();
+        componentTypes[typeid(T)] = ComponentType{nextComponentType};
+        componentArrays[typeid(T)] = std::make_shared<ComponentArray<T>>();
         ++nextComponentType;
     }
 
-    template <typename EventType>
+    template <typename T>
     ComponentType GetComponentType()
     {
-        std::type_index typeIndex = std::type_index(typeid(EventType));
+        std::type_index typeIndex = std::type_index(typeid(T));
         assert(componentTypes.find(typeIndex) != componentTypes.end() && "Component not registered before use.");
 
         return componentTypes[typeIndex];
     }
 
-    template <typename EventType>
-    void AddComponent(Entity entity, EventType component)
+    template <typename T>
+    void AddComponent(Entity entity, T component)
     {
-        GetComponentArray<EventType>()->insertData(entity, component);
+        GetComponentArray<T>()->insertData(entity, component);
     }
 
-    template <typename EventType>
+    template <typename T>
     void RemoveComponent(Entity entity)
     {
-        GetComponentArray<EventType>()->removeData(entity);
+        GetComponentArray<T>()->removeData(entity);
     }
 
-    template <typename EventType>
-    EventType &GetComponent(Entity entity)
+    template <typename T>
+    T &GetComponent(Entity entity)
     {
-        return GetComponentArray<EventType>()->getData(entity);
+        return GetComponentArray<T>()->getData(entity);
     }
 
     void EntityDestroyed(Entity entity)
@@ -130,12 +130,12 @@ private:
     std::unordered_map<std::type_index, std::shared_ptr<IComponentArray>> componentArrays{};
     std::uint32_t nextComponentType = 0;
 
-    template <typename EventType>
-    std::shared_ptr<ComponentArray<EventType>> GetComponentArray()
+    template <typename T>
+    std::shared_ptr<ComponentArray<T>> GetComponentArray()
     {
-        std::type_index typeIndex = std::type_index(typeid(EventType));
+        std::type_index typeIndex = std::type_index(typeid(T));
         assert(componentTypes.find(typeIndex) != componentTypes.end() && "Component not registered before use.");
 
-        return std::static_pointer_cast<ComponentArray<EventType>>(componentArrays[typeIndex]);
+        return std::static_pointer_cast<ComponentArray<T>>(componentArrays[typeIndex]);
     }
 };

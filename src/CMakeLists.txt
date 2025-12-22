@@ -9,5 +9,6 @@ target_sources(ecs PRIVATE
     core/world_config.cpp
     world_configs/default_world_config.cpp
     world_builder/test_world_builder.cpp
+    system/quadtree.cpp
 )
 

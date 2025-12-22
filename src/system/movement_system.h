@@ -8,7 +8,7 @@ class MovementSystem : public System
 public:
     void update(float deltaTime)
     {
-        for (auto const &entity : entities)
+        for (auto const &entity : getEntities())
         {
             auto &transform = world->getComponent<Transform>(entity);
             auto &velocity = world->getComponent<VelocityComponent>(entity);
