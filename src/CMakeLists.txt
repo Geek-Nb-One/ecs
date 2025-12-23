@@ -10,5 +10,6 @@ target_sources(ecs PRIVATE
     world_configs/default_world_config.cpp
     world_builder/test_world_builder.cpp
     system/quadtree.cpp
+    system/collider_system.cpp
 )
 

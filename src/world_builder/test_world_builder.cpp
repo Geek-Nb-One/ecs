@@ -276,5 +276,4 @@ void TestWorldBuilder::buildPlayer(World *world)
     collider.size = glm::vec2(16.0f, 32.0f);
     world->addComponent<ColliderComponent>(entity, collider);
     
-
 }

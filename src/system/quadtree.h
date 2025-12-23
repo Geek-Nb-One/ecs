@@ -84,12 +84,12 @@ private:
 
     void deleteNode(QuadtreeNode *node);
 
-    bool isColliding(const QuadtreeNode *node, const QuadtreeCollider &a) const;
+    bool inNode(const QuadtreeNode *node, const QuadtreeCollider &a) const;
     bool isContained(const QuadtreeNode *node, const QuadtreeCollider &a) const;
-    bool isColling(const QuadtreeCollider &a, const QuadtreeCollider &b) const;
-    bool isCollindingRect(const QuadtreeNode *node, float x, float y, float w, float h) const;
-    bool isCollindingCircle(const QuadtreeNode *node, float x, float y, float radius) const;
-    bool isCollindingPoint(const QuadtreeNode *node, float x, float y) const;
+    bool isColliding(const QuadtreeCollider &a, const QuadtreeCollider &b) const;
+    bool inNodeRect(const QuadtreeNode *node, float x, float y, float w, float h) const;
+    bool inNodeCircle(const QuadtreeNode *node, float x, float y, float radius) const;
+    bool inNodePoint(const QuadtreeNode *node, float x, float y) const;
 
     void query(QuadtreeCollider &area, std::set<Entity> &result);
 
@@ -108,6 +108,49 @@ private:
                 node->children[i] = nullptr;
             }
         }
+    }
+
+    bool isCollidingRectRect(const QuadtreeCollider &a, const QuadtreeCollider &b) const
+    {
+        return !(a.x + a.width < b.x || b.x + b.width < a.x ||
+                 a.y + a.height < b.y || b.y + b.height < a.y);
+    }
+
+    bool isCollidingCircleCircle(const QuadtreeCollider &a, const QuadtreeCollider &b) const
+    {
+        float dx = a.x - b.x;
+        float dy = a.y - b.y;
+        float radiiSum = a.radius + b.radius;
+        return (dx * dx + dy * dy) < (radiiSum * radiiSum);
+    }
+
+    bool isCollidingRectCircle(const QuadtreeCollider &a, const QuadtreeCollider &b) const
+    {
+        float closestX = std::max(a.x, std::min(b.x, a.x + a.width));
+        float closestY = std::max(a.y, std::min(b.y, a.y + a.height));
+
+        float dx = b.x - closestX;
+        float dy = b.y - closestY;
+
+        return (dx * dx + dy * dy) < (b.radius * b.radius);
+    }
+
+    bool isCollidingRectPoint(const QuadtreeCollider &a, const QuadtreeCollider &b) const
+    {
+        return (b.x >= a.x && b.x <= a.x + a.width &&
+                b.y >= a.y && b.y <= a.y + a.height);
+    }
+
+    bool isCollidingCirclePoint(const QuadtreeCollider &a, const QuadtreeCollider &b) const
+    {
+        float dx = a.x - b.x;
+        float dy = a.y - b.y;
+        return (dx * dx + dy * dy) < (a.radius * a.radius);
+    }
+
+    bool isCollidingPointPoint(const QuadtreeCollider &a, const QuadtreeCollider &b) const
+    {
+        return a.x == b.x && a.y == b.y;
     }
 
 };
