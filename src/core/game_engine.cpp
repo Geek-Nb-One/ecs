@@ -65,4 +65,7 @@ void GameEngine::loop()
 void GameEngine::shutdown()
 {
     std::cerr << "Shutting down Game Engine." << std::endl;
+
+    world->shutdown();
+
 }

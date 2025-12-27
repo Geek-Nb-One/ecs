@@ -68,6 +68,12 @@ public:
         return componentManager.GetComponent<T>(entity);
     }
 
+    template<typename T>
+    bool hasComponent(Entity entity)
+    {
+        return componentManager.HasComponent<T>(entity);
+    }
+
     template<typename Component>
     ComponentType getComponentType()
     {
@@ -110,6 +116,11 @@ public:
     void setRenderer(SDL_Renderer* renderer)
     {
         textureLoader.setRenderer(renderer);
+    }
+
+    void shutdown()
+    {
+        worldConfig->shutdown();
     }
 
 private:

@@ -12,6 +12,7 @@ class WorldConfig{
     virtual void setupComponents(World* world)=0;
     virtual void setupSystems(World* world)=0;
     virtual void update(float deltaTime)=0;
+    virtual void shutdown(){};
     virtual ~WorldConfig()=default;
 };
 

@@ -1,7 +1,9 @@
 #include "default_world_config.h"
 #include "components.h"
 
-
+#include <imgui/imgui.h>
+#include <imgui/imgui_impl_sdl3.h>
+#include <imgui/imgui_impl_sdlrenderer3.h>
 
 void DefaultWorldConfig::setupComponents(World *world)
 {
@@ -33,6 +35,7 @@ void DefaultWorldConfig::setupSystems(World *world)
 
 
     world->subscribeEvent<RenderSystem, LogicalSizeChangedEvent>(renderSystem.get(), &RenderSystem::onLogicalSizeChanged);
+    world->subscribeEvent<RenderSystem, WindowResizeRequestedEvent>(renderSystem.get(), &RenderSystem::onWindowSetSize);
     
     Signature signature;
     signature.set(world->getComponentType<RenderComponent>().id, true);
@@ -79,6 +82,8 @@ void DefaultWorldConfig::update(float deltaTime)
 
     processSDLEvents();
 
+    imGuiNewFrame();
+
     playerControllerSystem->update(deltaTime);
     animationSystem->update(deltaTime);
     movementSystem->update(deltaTime);
@@ -86,6 +91,13 @@ void DefaultWorldConfig::update(float deltaTime)
     colliderSystem->update(deltaTime);
     
     renderSystem->render();
+}
+
+void DefaultWorldConfig::shutdown()
+{
+    ImGui_ImplSDLRenderer3_Shutdown();
+    ImGui_ImplSDL3_Shutdown();
+    ImGui::DestroyContext();
 }
 
 void DefaultWorldConfig::processSDLEvents()
@@ -97,5 +109,15 @@ void DefaultWorldConfig::processSDLEvents()
     {
         windowSystem->processEvent(sdlEvent);
         playerControllerSystem->processEvents(sdlEvent);
+        ImGui_ImplSDL3_ProcessEvent(&sdlEvent);
     }
+}
+
+void DefaultWorldConfig::imGuiNewFrame()
+{
+    ImGui_ImplSDL3_NewFrame();
+    ImGui_ImplSDLRenderer3_NewFrame();
+    ImGui::NewFrame();  
+
+    ImGui::ShowDemoWindow();
 }

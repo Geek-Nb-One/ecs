@@ -88,8 +88,9 @@ void TestWorldBuilder::buildEnvironment(World *world)
     ColliderComponent collider;
     collider.shape = ColliderComponent::Shape::Rectangle;
     collider.isStatic = true;
-    collider.offset = glm::vec2(0.0f, 0.0f);
-    collider.size = glm::vec2(32.0f, 32.0f);
+    collider.renderFrame = true;
+    collider.offset = glm::vec2(2.0f, 2.0f);
+    collider.size = glm::vec2(28.0f, 28.0f);
     world->addComponent<ColliderComponent>(entity, collider);
     RenderComponent renderComponent;
     renderComponent.texture = tileTexture;
@@ -100,6 +101,7 @@ void TestWorldBuilder::buildEnvironment(World *world)
     world->addComponent<RenderComponent>(entity, renderComponent);
 
 }
+
 
 void TestWorldBuilder::buildPlayer(World *world)
 {
@@ -272,8 +274,9 @@ void TestWorldBuilder::buildPlayer(World *world)
     ColliderComponent collider;
     collider.shape = ColliderComponent::Shape::Rectangle;
     collider.isStatic = false;
-    collider.offset = glm::vec2(0.0f, 0.0f);
-    collider.size = glm::vec2(16.0f, 32.0f);
+    collider.renderFrame = true;
+    collider.offset = glm::vec2(1.5f, 14.0f);
+    collider.size = glm::vec2(13.0f, 16.0f);
     world->addComponent<ColliderComponent>(entity, collider);
     
 }

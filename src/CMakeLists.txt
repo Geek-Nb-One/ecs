@@ -1,6 +1,6 @@
 
 add_executable(ecs main.cpp core/game_engine.cpp)
-target_link_libraries(ecs SDL3::SDL3 glm::glm SDL3_image::SDL3_image) 
+target_link_libraries(ecs SDL3::SDL3 glm::glm SDL3_image::SDL3_image imgui) 
 
 
 target_sources(ecs PRIVATE

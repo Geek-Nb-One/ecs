@@ -23,4 +23,12 @@ private:
     void addColliderToQuadtree(Entity entity, Quadtree &quadtree);
     void queryColliderToQuadtree(Entity entity, Quadtree &quadtree, std::set<Entity> &outEntities);
     void addCollision(Entity a, Entity b, std::set<std::pair<Entity, Entity>> &handledPairs);
+
+    void resolveCollisions(std::set<std::pair<Entity, Entity>> &handledPairs);
+
+
+    bool isColliding(const Entity a, const Entity b);
+   
+    
+
 };

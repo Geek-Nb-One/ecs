@@ -59,6 +59,11 @@ public:
         return componentArray[entityToIndexMap[entity]];
     }
 
+    bool hasData(Entity entity) const
+    {
+        return entityToIndexMap.find(entity) != entityToIndexMap.end();
+    }
+
     void EntityDestroyed(Entity entity) override
     {
         // Implementation for handling entity destruction
@@ -114,6 +119,12 @@ public:
     T &GetComponent(Entity entity)
     {
         return GetComponentArray<T>()->getData(entity);
+    }
+
+    template <typename T>
+    bool HasComponent(Entity entity)
+    {
+        return GetComponentArray<T>()->hasData(entity);
     }
 
     void EntityDestroyed(Entity entity)

@@ -20,6 +20,8 @@ public:
 
     void update(float deltaTime);
 
+    void shutdown() override;
+
 private:
     std::shared_ptr<WindowSystem> windowSystem;
     std::shared_ptr<RenderSystem> renderSystem;
@@ -29,4 +31,7 @@ private:
     std::shared_ptr<ColliderSystem> colliderSystem;
 
     void processSDLEvents();
+
+    void imGuiNewFrame();
+
 };

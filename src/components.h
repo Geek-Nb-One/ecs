@@ -83,7 +83,7 @@ struct ColliderComponent{
     glm::vec2 offset;
     glm::vec2 size; // For rectangle: width and height; For circle: x = radius, y unused    
     
-
+    bool renderFrame = false;
     bool isStatic = false;
     
 };

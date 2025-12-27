@@ -22,4 +22,17 @@ public:
 
     void onLogicalSizeChanged(LogicalSizeChangedEvent *event);
 
+    void initImGui(SDL_Window * window);
+    void renderImGui();
+
+    void onWindowSetSize(WindowResizeRequestedEvent* event);
+    
+
+private:
+
+    int windowWidth;
+    int windowHeight;
+
+    int logicalWidth;
+    int logicalHeight;
 };
